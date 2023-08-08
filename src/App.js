@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { SketchPicker } from "react-color";
+import ImportColors from "./import-colors";
+import ColorEditor from "./color-editor";
+import ExportColors from "./export-colors";
 
 function App() {
+  const [colors, setColors] = useState([]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="section">
+      <div className="container">
+        {colors.length ? (
+          <>
+            <ColorEditor colors={colors} setColors={setColors} />
+            <ExportColors colors={colors} />
+          </>
+        ) : (
+          <ImportColors onImport={setColors} />
+        )}
+      </div>
+    </section>
   );
 }
 
