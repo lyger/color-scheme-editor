@@ -8,6 +8,7 @@ function ColorRow({ index, selected, color, label, onClick }) {
       <a className={selected ? "is-active" : ""} onClick={() => onClick(index)}>
         <span className="swatch" style={{ backgroundColor: color }} />
         <span>{label}</span>
+        <span style={{ opacity: 0.5 }}> ({color})</span>
       </a>
     </li>
   );
@@ -32,13 +33,29 @@ export default function ColorEditor({ colors, setColors }) {
         sortFn = (c1, c2) =>
           tinycolor(c1.color).toHsv().h - tinycolor(c2.color).toHsv().h;
         break;
+      case "selected":
+        const selRgb = tinycolor(colors[selColorIndex].color).toRgb();
+        sortFn = (c1, c2) => {
+          const rgb1 = tinycolor(c1.color).toRgb();
+          const rgb2 = tinycolor(c2.color).toRgb();
+          const delta1 =
+            Math.abs(selRgb.r - rgb1.r) +
+            Math.abs(selRgb.g - rgb1.g) +
+            Math.abs(selRgb.b - rgb1.b);
+          const delta2 =
+            Math.abs(selRgb.r - rgb2.r) +
+            Math.abs(selRgb.g - rgb2.g) +
+            Math.abs(selRgb.b - rgb2.b);
+          return delta1 - delta2;
+        };
+        break;
       case "original":
       default:
         sortFn = (c1, c2) => c1.index - c2.index;
     }
     newSortedColors.sort(sortFn);
     return newSortedColors;
-  }, [colors, sortMethod]);
+  }, [colors, sortMethod, selColorIndex]);
   return (
     <div className="columns">
       {selColorIndex === null ? null : (
@@ -69,8 +86,21 @@ export default function ColorEditor({ colors, setColors }) {
           >
             By hue
           </button>
+          {selColorIndex === null ? null : (
+            <button
+              className={`button${
+                sortMethod === "selected" ? " is-primary" : ""
+              }`}
+              onClick={() => setSortMethod("selected")}
+            >
+              Similar to selected
+            </button>
+          )}
         </div>
-        <div className="menu">
+        <div
+          className="menu"
+          style={{ maxHeight: "calc(100vh - 22em)", overflowY: "scroll" }}
+        >
           <ul className="menu-list">
             {sortedColors.map((color) => (
               <ColorRow

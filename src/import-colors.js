@@ -30,6 +30,7 @@ export default function ImportColors({ onImport }) {
           <textarea
             className="textarea"
             value={colorText}
+            placeholder="Paste color codes and labels separated by tabs e.g.&#10;#ff0000&#9;Main&#10;#00ff00&#9;Secondary&#10;#0000ff&#9;Tertiary"
             onChange={(e) => setColorText(e.target.value)}
           />
         </div>

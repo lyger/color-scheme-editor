@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import { SketchPicker } from "react-color";
 import ImportColors from "./import-colors";
 import ColorEditor from "./color-editor";
 import ExportColors from "./export-colors";

@@ -1,8 +1,9 @@
 .swatch {
   display: inline-block;
-  vertical-align: text-bottom;
+  vertical-align: middle;
   width: 2em;
-  height: 1em;
-  border-radius: 0.5em;
+  height: 1.25em;
+  border: 2px solid white;
+  border-radius: 9999px;
   margin-right: 0.5em;
 }
